@@ -1,0 +1,27 @@
+{
+  "name": "ble",
+  "version": "0.0.1",
+  "description": "A BLE Peripheral For Raspberry Pi",
+  "main": "peripheral.js",
+  "dependencies": {
+    "bleno": "^0.4.2",
+    "express": "^4.15.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "none"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/qbalsdon/BLE_Rpi_Peripheral.git"
+  },
+  "keywords": [
+    "BluetoothLE",
+    "Raspberry_Pi"
+  ],
+  "author": "Quintin Balsdon",
+  "license": "none",
+  "bugs": {
+    "url": "https://github.com/qbalsdon/BLE_Rpi_Peripheral/issues"
+  }
+}
