@@ -14,58 +14,17 @@ var updateCallback;
 var terminalCallback;
 var terminalResponse;
 
-var descriptor = new Descriptor({
-    uuid: 'febf57a0-b80e-4f28-98c3-d361cb374171',
-    value: 'value' // static value, must be of type Buffer or string if set
-});
-
-// new characteristic added to the service
-var output = new bleno.Characteristic({
-    uuid : '53b3d9597dd3483994e17b0eaea9aac2',
-    properties : ['read','write','notify', 'indicate'],
-    descriptors : [descriptor],
-    onReadRequest : function(offset, callback) {
-        console.log("Read request");
-        if(offset > data.length) {
-            callback(bleno.Characteristic.RESULT_INVALID_OFFSET);
-        } else {
-            callback(bleno.Characteristic.RESULT_SUCCESS, data.slice(offset));
-        }
-    },
-    onWriteRequest : function(newData, offset, withoutResponse, callback) {
-        if(offset > 0) {
-            callback(bleno.Characteristic.RESULT_INVALID_OFFSET);
-        } else {
-            var data = newData.toString('utf8');
-            console.log(data);
-            callback(bleno.Characteristic.RESULT_SUCCESS);
-            if (updateCallback)
-                updateCallback(new Buffer('success Quintin').slice(offset));
-        }
-    },
-    onSubscribe: function(maxValueSize, updateValueCallback) { 
-       console.log("onSubscribe called");
-       updateCallback = updateValueCallback; 
-    },
-    onUnsubscribe: function() { 
-        console.log("onUnsubscribe");
-    },
-    onNotify: function() { 
-        console.log("onNotify");
-    },
-    onIndicate: function() { 
-        console.log("onIndicate");
-    }
-});
+var START_CHAR = String.fromCharCode(002); //START OF TEXT CHAR
+var END_CHAR = String.fromCharCode(003);   //END OF TEXT CHAR
 
 function sliceUpResponse(callback, responseText) {
   if (!responseText) return;
-  callback(new Buffer("α"));
+  callback(new Buffer(START_CHAR));
   while(responseText !== '') {
       callback(new Buffer(responseText.substring(0, CHUNK_SIZE)));
       responseText = responseText.substring(CHUNK_SIZE);
   }
-  callback(new Buffer("ω"));
+  callback(new Buffer(END_CHAR));
 }
 
 var terminal = new bleno.Characteristic({
@@ -102,9 +61,6 @@ var terminal = new bleno.Characteristic({
     onUnsubscribe: function() {
         terminalCallback = null;
         console.log("onUnsubscribe");
-    },
-    onNotify: function() {
-        console.log("onNotify");
     }
 });
 
@@ -125,7 +81,7 @@ bleno.on('advertisingStart', function(error) {
                 uuid : myId,
                 characteristics : [
                     // add characteristics here
-                    output, terminal
+                    terminal
                 ]
             })
         ]);
