@@ -18,7 +18,7 @@ var START_CHAR = String.fromCharCode(002); //START OF TEXT CHAR
 var END_CHAR = String.fromCharCode(003);   //END OF TEXT CHAR
 
 function sliceUpResponse(callback, responseText) {
-  if (!responseText) return;
+  if (!responseText || !responseText.trim()) return;
   callback(new Buffer(START_CHAR));
   while(responseText !== '') {
       callback(new Buffer(responseText.substring(0, CHUNK_SIZE)));
@@ -39,12 +39,13 @@ var terminal = new bleno.Characteristic({
             callback(bleno.Characteristic.RESULT_ATTR_NOT_LONG);
         } else {
             var data = newData.toString('utf8');
-            console.log("Command received: [" + data + "] Without Response: [" + withoutResponse + "]");
+            console.log("Command received: [" + data + "]");
             dir = exec(data, function(err, stdout, stderr) {
                 if (err) {
-                    console.log(err);
+                    var stringError = JSON.stringify(err);
+                    console.log(stringError);
                     callback(bleno.Characteristic.RESULT_SUCCESS);
-                    terminalResponse = err;
+                    terminalResponse = stringError;
                 } else {
                     console.log(stdout);
                     callback(bleno.Characteristic.RESULT_SUCCESS);

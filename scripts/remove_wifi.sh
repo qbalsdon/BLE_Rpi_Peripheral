@@ -5,8 +5,8 @@ END=$(($NUM+2))
 
 if [ $START -lt 0 ]
 then
-    echo "No such connecttion"
-    exit 1;
+    echo "No such connection"
+    exit 0;
 fi
 sudo sed -i "${START},${END}d" /etc/wpa_supplicant/wpa_supplicant.conf
 sudo wpa_cli reconfigure
