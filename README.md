@@ -1,6 +1,16 @@
 # BLE_Rpi_Peripheral
-Allows a Raspberry Pi to be used as a Bluetooth Low Energy Peripheral
+<h2>Allows a Raspberry Pi to be used as a Bluetooth Low Energy Peripherali</h2>
+<h3>THE EASY WAY:</h3>
+Download the pre-defined SD card image and deploy.
 
+<h3>THE SLIGHTLY LESS EASY WAY:</h3>
+<ol><li>Open up a terminal</li><li>cd ~</li>
+<li>sudo mkdir repo</li>
+<li>cd repo</li>
+<li>git clone https://github.com/qbalsdon/BLE_Rpi_Peripheral.git</li>
+<li>sudo ./repo/BLE_Rpi_Peripheral/scripts/setup.sh</li></ol><br/>
+
+<h3>THE HARD WAY:</h3>
 Pre-Requisites:
 
 
