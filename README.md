@@ -1,5 +1,5 @@
 # BLE_Rpi_Peripheral
-<h2>Allows a Raspberry Pi to be used as a Bluetooth Low Energy Peripherali</h2>
+<h2>Allows a Raspberry Pi to be used as a Bluetooth Low Energy Peripheral</h2>
 <h3>THE EASY WAY:</h3>
 Download the pre-defined SD card image and deploy.
 
