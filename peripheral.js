@@ -1,5 +1,6 @@
 var bleno = require('bleno');
 var exec = require('child_process').exec;
+var Gpio = require('pigpio').Gpio;
 
 var CHUNK_SIZE = 20;
 
@@ -16,6 +17,97 @@ var terminalResponse;
 
 var START_CHAR = String.fromCharCode(002); //START OF TEXT CHAR
 var END_CHAR = String.fromCharCode(003);   //END OF TEXT CHAR
+
+m1_en = 5;
+m1_p  = 24;
+m1_n  = 27;
+
+m2_en = 17;
+m2_p  = 6;
+m2_n  = 22;
+
+m3_en = 12;
+m3_p  = 23;
+m3_n  = 16;
+
+m4_en = 25;
+m4_p  = 13;
+m4_n  = 18;
+
+var EN = [];
+var FWD = [];
+var BCK = [];
+var MOTOR_COUNT = 4;
+
+var LMOTOR = 3;
+var RMOTOR = 2;
+
+function getOutputPin(pinNumber) {
+    return new Gpio(pinNumber, {mode: Gpio.OUTPUT});
+}
+
+function initMotors() {
+    EN.push(getOutputPin(m1_en));
+    EN.push(getOutputPin(m2_en));
+    EN.push(getOutputPin(m3_en));
+    EN.push(getOutputPin(m4_en));
+
+    FWD.push(getOutputPin(m1_p));
+    FWD.push(getOutputPin(m2_p));
+    FWD.push(getOutputPin(m3_p));
+    FWD.push(getOutputPin(m4_p));
+
+    BCK.push(getOutputPin(m1_n));
+    BCK.push(getOutputPin(m2_n));
+    BCK.push(getOutputPin(m3_n));
+    BCK.push(getOutputPin(m4_n));
+
+    for (var i=0, l=MOTOR_COUNT; i<l; i++) {
+        EN[i].digitalWrite(1);
+        FWD[i].pwmWrite(0);
+        BCK[i].pwmWrite(0);
+    }
+}
+
+function driveMotor(instruction) {
+    driveMotor(instruction, 0);
+}
+
+function driveMotor(instruction, speed) {
+        switch(instruction) {
+        case "F":
+            BCK[RMOTOR].pwmWrite(0);
+            FWD[RMOTOR].pwmWrite(speed);
+            BCK[LMOTOR].pwmWrite(0);
+            FWD[LMOTOR].pwmWrite(speed);
+        break;
+        case "B":
+            FWD[RMOTOR].pwmWrite(0);
+            BCK[RMOTOR].pwmWrite(speed);
+            FWD[LMOTOR].pwmWrite(0);
+            BCK[LMOTOR].pwmWrite(speed);
+        break;
+        case "L":
+            FWD[RMOTOR].pwmWrite(0);
+            BCK[RMOTOR].pwmWrite(speed);
+            BCK[LMOTOR].pwmWrite(0);
+            FWD[LMOTOR].pwmWrite(speed);
+        break;
+        case "R":
+            BCK[RMOTOR].pwmWrite(0);
+            FWD[RMOTOR].pwmWrite(speed);
+            FWD[LMOTOR].pwmWrite(0);
+            BCK[LMOTOR].pwmWrite(speed);
+        break;
+        case "S":
+        case "STOP":
+            for (var i = 0; i < MOTOR_COUNT; i++) {
+                BCK[i].pwmWrite(0);
+                FWD[i].pwmWrite(0);
+            }
+        break;
+    }
+}
 
 function sliceUpResponse(callback, responseText) {
   if (!responseText || !responseText.trim()) return;
@@ -65,9 +157,33 @@ var terminal = new bleno.Characteristic({
     }
 });
 
+var motor = new bleno.Characteristic({
+    uuid : 'd23157c4-8416-44ff-b41d-a548c2d28653',
+    properties : ['writeWithoutResponse','read'],
+    onReadRequest : function(offset, callback) {
+        console.log("Read request");
+        callback(bleno.Characteristic.RESULT_SUCCESS, new Buffer(terminalResponse).slice(offset));
+    },
+    onWriteRequest : function(newData, offset, withoutResponse, callback) {
+        if(offset) {
+            callback(bleno.Characteristic.RESULT_ATTR_NOT_LONG);
+        } else {
+            var data = newData.toString('utf8');
+            console.log("Motor instuction: [" + data + "]");
+            var params = data.split(' ');
+            if (params.length >= 2) {
+                driveMotor(params[0], params[1]);
+            } else {
+                driveMotor(params[0]);
+            }
+        }
+    }
+});
+
 bleno.on('stateChange', function(state) {
     console.log('on -> stateChange: ' + state);
     if (state === 'poweredOn') {
+        initMotors();
         bleno.startAdvertising(deviceName,[myId]);
     } else {
         bleno.stopAdvertising();
@@ -82,7 +198,7 @@ bleno.on('advertisingStart', function(error) {
                 uuid : myId,
                 characteristics : [
                     // add characteristics here
-                    terminal
+                    terminal, motor
                 ]
             })
         ]);
