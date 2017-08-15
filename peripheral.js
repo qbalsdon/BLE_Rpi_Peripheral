@@ -39,7 +39,7 @@ var FWD = [];
 var BCK = [];
 var MOTOR_COUNT = 4;
 
-var LMOTOR = 3;
+var LMOTOR = 1;
 var RMOTOR = 2;
 
 function getOutputPin(pinNumber) {
