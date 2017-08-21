@@ -8,7 +8,8 @@ Download the pre-defined SD card image and deploy.
 <li>sudo mkdir repo</li>
 <li>cd repo</li>
 <li>git clone https://github.com/qbalsdon/BLE_Rpi_Peripheral.git</li>
-<li>sudo ./repo/BLE_Rpi_Peripheral/scripts/setup.sh</li></ol><br/>
+<li>cd BLE_Rpi_Peripheral</li>
+<li>sudo ./scripts/setup.sh</li></ol><br/>
 
 <h3>THE HARD WAY:</h3>
 Pre-Requisites:
