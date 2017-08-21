@@ -39,8 +39,9 @@ var FWD = [];
 var BCK = [];
 var MOTOR_COUNT = 4;
 
-var LMOTOR = 1;
-var RMOTOR = 2;
+var LMOTOR = 3;
+var RMOTOR = 0;
+var TMOTOR = 1;
 
 function getOutputPin(pinNumber) {
     return new Gpio(pinNumber, {mode: Gpio.OUTPUT});
@@ -98,6 +99,14 @@ function driveMotor(instruction, speed) {
             FWD[RMOTOR].pwmWrite(speed);
             FWD[LMOTOR].pwmWrite(0);
             BCK[LMOTOR].pwmWrite(speed);
+        break;
+        case "C":
+            BCK[TMOTOR].pwmWrite(0);
+            FWD[TMOTOR].pwmWrite(speed);
+        break;
+        case "A":
+            FWD[TMOTOR].pwmWrite(0);
+            BCK[TMOTOR].pwmWrite(speed);
         break;
         case "S":
         case "STOP":
