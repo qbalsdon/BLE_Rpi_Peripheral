@@ -4,18 +4,15 @@
 Download the pre-defined SD card image and deploy.
 
 <h3>THE SLIGHTLY LESS EASY WAY:</h3>
-<ol><li>Open up a terminal</li><li>cd ~</li>
-<li>sudo mkdir repo</li>
-<li>cd repo</li>
-<li>git clone https://github.com/qbalsdon/BLE_Rpi_Peripheral.git</li>
-<li>cd BLE_Rpi_Peripheral</li>
-<li>sudo ./scripts/setup.sh</li></ol><br/>
+```
+wget -O - https://raw.githubusercontent.com/qbalsdon/BLE_Rpi_Peripheral/master/scripts/setup.sh | sudo sh
+```
 
 <h3>THE HARD WAY:</h3>
 Pre-Requisites:
 
 
-All you need to do is make sure the Pi is up to date, with NPM installed. You do not need any pre-requisites from older Pi builds that did not include Bluetooth. Please do not manually install any of these: 
+All you need to do is make sure the Pi is up to date, with NPM (NODE needs to be version 8.9.0 - I have had problems with 10+) installed. You do not need any pre-requisites from older Pi builds that did not include Bluetooth. Please do not manually install any of these: 
 
 <ul>
 <li>bluetooth</li><li>bluez</li><li>libbluetooth-dev</li><li>libudev-dev</li>

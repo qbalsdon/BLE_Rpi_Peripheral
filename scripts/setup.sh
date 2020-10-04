@@ -1,10 +1,24 @@
 #!/bin/sh
 
+DIR=$(pwd)
+EXEC_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+cleanup () {
+    cd $DIR
+} 
+trap cleanup EXIT
+
+cd ~
 sudo apt-get -y install npm
-sudo sed -i 's/PRESERVE_ASCII_NULL = 4/PRESERVE_ASCII_NULL = 4,\n    REPLACE_INVALID_UTF8 = 0/' /usr/include/nodejs/deps/v8/include/v8.h
 
-sudo echo "@sudo lxterminal -e sudo node /home/pi/repo/BLE_Rpi_Peripheral/peripheral.js" | sudo tee -a /home/pi/.config/lxsession/LXDE-pi/autostart
+echo "!! NOTE !! - This requires a lower version of node"
+echo "    Current node version: $(node -v)"
+sudo npm install -g n
+sudo n 8.9.0
 
+mkdir repo
+cd repo
+git clone https://github.com/qbalsdon/BLE_Rpi_Peripheral
 cd /home/pi/repo/BLE_Rpi_Peripheral/
 sudo npm install
 
