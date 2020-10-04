@@ -6,7 +6,7 @@ Download the pre-defined SD card image and deploy.
 ### THE SLIGHTLY LESS EASY WAY:
 
 ```
-wget -O - https://raw.githubusercontent.com/qbalsdon/BLE_Rpi_Peripheral/master/scripts/setup.sh | sudo sh
+sudo curl https://raw.githubusercontent.com/qbalsdon/BLE_Rpi_Peripheral/main/scripts/setup.sh | sh
 ```
 
 ### THE HARD WAY:
