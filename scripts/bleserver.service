@@ -1,0 +1,16 @@
+[Unit]
+Description=Blueberry Pi BLE Server
+Wants=network-online.target
+After=network-online.target
+Wants=systemd-timesyncd.service
+After=systemd-timesyncd.service
+
+[Service]
+Environment=DISPLAY=:0
+Type=simple
+Restart=always
+User=pi
+ExecStart=sudo node /home/pi/repo/BLE_Rpi_Peripheral/peripheral.js
+
+[Install]
+WantedBy=multi-user.target
