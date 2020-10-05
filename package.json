@@ -5,6 +5,7 @@
   "main": "peripheral.js",
   "dependencies": {
     "bleno": "^0.4.2",
+    "bluetooth-hci-socket": "^0.5.1",
     "express": "^4.15.3"
   },
   "devDependencies": {},

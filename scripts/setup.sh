@@ -1,7 +1,6 @@
 #!/bin/sh
 
 DIR=$(pwd)
-EXEC_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 cleanup () {
     cd $DIR
@@ -20,12 +19,7 @@ mkdir repo
 cd repo
 git clone https://github.com/qbalsdon/BLE_Rpi_Peripheral
 cd /home/pi/repo/BLE_Rpi_Peripheral/
-sudo npm install
+sudo npm install --unsafe-perm
 
 echo "System is ready to be rebooted"
 
-#cd ~
-#sudo mkdir repo
-#cd repo
-#git clone https://github.com/qbalsdon/BLE_Rpi_Peripheral.git
-#sudo ./repo/BLE_Rpi_Peripheral/scripts/setup.sh
