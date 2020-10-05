@@ -1,5 +1,5 @@
 #!/bin/sh
-EXEC_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+EXEC_DIR="/home/pi/repo/BLE_Rpi_Peripheral/scripts"
 # Create the symlink
 sudo ln -s $EXEC_DIR/bleserver.service /lib/systemd/system
 

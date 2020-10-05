@@ -1,12 +1,20 @@
 # BLE_Rpi_Peripheral
 ## Allows a Raspberry Pi to be used as a Bluetooth Low Energy Peripheral
 ### THE EASY WAY:
-Download the pre-defined SD card image and deploy.
+Download the pre-defined SD card image and deploy. This feature is under construction
 
 ### THE SLIGHTLY LESS EASY WAY:
 
+#### Installation and download
+
 ```
-sudo curl https://raw.githubusercontent.com/qbalsdon/BLE_Rpi_Peripheral/main/scripts/setup.sh | sh
+# sudo curl https://raw.githubusercontent.com/qbalsdon/BLE_Rpi_Peripheral/main/scripts/setup.sh | sh
+```
+
+#### To install the service to run on every boot
+
+```
+# sudo curl https://raw.githubusercontent.com/qbalsdon/BLE_Rpi_Peripheral/main/scripts/installService.sh | sh
 ```
 
 ### THE HARD WAY:
