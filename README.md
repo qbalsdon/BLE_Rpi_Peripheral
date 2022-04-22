@@ -1,3 +1,5 @@
+# DEPRECATED: This project is no longer maintained
+
 # BLE_Rpi_Peripheral
 ## Allows a Raspberry Pi to be used as a Bluetooth Low Energy Peripheral
 ### THE EASY WAY:
